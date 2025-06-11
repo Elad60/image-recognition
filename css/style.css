@@ -1,7 +1,7 @@
 /********** Template CSS **********/
 
 :root {
-    --primary: #018500;
+    --primary: #04e9eb;
     --secondary: #545454;
     --light: #FDF5EB;
     --dark: #1E1916;
@@ -241,7 +241,7 @@ h6,
     height: 80%;
     top: 10%;
     left: 20%;
-    background: var(--primary);
+    background: #04e9eb;
     border: 25px solid var(--light);
     border-radius: 6px;
     z-index: -1;

@@ -2853,20 +2853,20 @@
     
     .btn-primary {
         color: #000;
-        background-color: #018500;
+        background-color: #008283;
         border-color: #f9f9f9
     }
     
     .btn-primary:hover {
         color: #000;
-        background-color: #02ad02;
+        background-color: #04e9eb;
         border-color: #fafafa
     }
     
     .btn-check:focus+.btn-primary,
     .btn-primary:focus {
         color: #000;
-        background-color: #02ad02;
+        background-color: #04e9eb;
         border-color: #fafafa;
         box-shadow: 0 0 0 .25rem rgba(199, 141, 46, 0.5)
     }
@@ -2877,7 +2877,7 @@
     .btn-primary.active,
     .show>.btn-primary.dropdown-toggle {
         color: #000;
-        background-color: #02ad02;
+        background-color: #04e9eb;
         border-color: #fafafa
     }
     
@@ -7922,27 +7922,27 @@
     }
     
     .text-primary {
-        color: #02ff00 !important
+        color: #04e9eb !important
     }
     
     .text-secondary {
-        color: #545454 !important
+        color: #04e9eb !important
     }
     
     .text-success {
-        color: #198754 !important
+        color: #04e9eb !important
     }
     
     .text-info {
-        color: #0dcaf0 !important
+        color: #04e9eb !important
     }
     
     .text-warning {
-        color: #02ff00 !important
+        color: #04e9eb !important
     }
     
     .text-danger {
-        color: #dc3545 !important
+        color: #04e9eb !important
     }
     
     .text-light {

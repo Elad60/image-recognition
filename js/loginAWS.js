@@ -91,17 +91,15 @@ function displayUserInfo(idToken) {
         updateAuthUI(username, userGroup);
     } catch (error) {
         console.error('Error displaying user info:', error);
-        Swal.fire({
-            title: "Error!",
-            text: "Error displaying user information",
-            icon: "error"
-        });
     }
 }
 
 function updateAuthUI(username) {
     const userGreeting = document.getElementById('userGreeting');
     const authButton = document.getElementById('authButton');
+    const demoSection = document.getElementById('demo-section');
+    const loginMessage = document.getElementById('login-message');
+
     if (username) {
         userGreeting.textContent = `Hello, ${username}`;
         userGreeting.classList.remove('d-none');
@@ -110,6 +108,9 @@ function updateAuthUI(username) {
         authButton.classList.remove('btn-primary');
         authButton.classList.add('btn-danger');
 
+        demoSection.classList.remove('d-none');
+        loginMessage.classList.add('d-none');
+
     } else {
         userGreeting.textContent = '';
         userGreeting.classList.add('d-none');
@@ -117,6 +118,9 @@ function updateAuthUI(username) {
         authButton.onclick = signIn;
         authButton.classList.remove('btn-danger');
         authButton.classList.add('btn-primary');
+
+        demoSection.classList.add('d-none');
+        loginMessage.classList.remove('d-none');
     }
 
     document.getElementById('authContainer').classList.remove('d-none');

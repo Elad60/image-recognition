@@ -1,10 +1,5 @@
 // הגדרות AWS כל פעם בפתחית מעבדה צריך לשנות בהתאם את הנתונים
-AWS.config.update({
-    region: "",
-    accessKeyId: "",
-    secretAccessKey: "",
-    sessionToken: " "
-});
+
 let isProfilePicUploaded = false;
 let isGalleryUploaded = false;
 const dynamoDB = new AWS.DynamoDB.DocumentClient();

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Recognition Project</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🔍 Image Recognition</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Architecture</a>
+      <a href="#">Demo</a>
+      <a href="#">Docs</a>
+      <a href="#">Team</a>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <a href="https://image-recognition-demo.auth.us-east-1.amazoncognito.com/login?client_id=3d8vok28jlhvceq56588j6inv&response_type=token&scope=email+openid&redirect_uri=http://localhost:5500">
+        <button id="signin-btn">🔐 Sign In with Cognito</button>
+      </a>      
+    <section id="demo-section">
+        <h2>Try it Yourself</h2>
+        <input type="file" id="imageInput" accept="image/*" />
+        <button id="uploadBtn">Upload and Analyze</button>
+      
+        <div id="result" style="margin-top: 20px;"></div>
+      </section>
+      
+    <section>
+      <h2>Welcome to Our Project!</h2>
+      <p>This site demonstrates our AWS-based image recognition pipeline.</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -17,7 +17,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   )}`;
 
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiUrl); // 🔁 בלי Authorization Header
 
     if (!response.ok) {
       throw new Error(`Server returned ${response.status}`);

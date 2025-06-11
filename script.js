@@ -8,16 +8,56 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   }
 
   const file = input.files[0];
-  const imageName = file.name;
+  const originalName = file.name;
 
-  resultDiv.innerText = "Analyzing image...";
+  resultDiv.innerText = "Uploading and analyzing image...";
 
+  // שלב 1: בקשת כתובת חתומה
+  const uploadResponse = await fetch(
+    "https://zj2tr18y1i.execute-api.us-east-1.amazonaws.com/prod/upload",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageName: originalName }),
+    }
+  );
+
+  if (!uploadResponse.ok) {
+    resultDiv.innerHTML = `<p style="color:red;">❌ Failed to get upload URL</p>`;
+    return;
+  }
+
+  const uploadData = await uploadResponse.json();
+  const uploadUrl = uploadData.uploadUrl;
+  const fileKey = uploadData.fileKey; // 🔥 זה מה שנשמר ב־DynamoDB
+
+  // שלב 2: העלאה ל-S3
+  const putResponse = await fetch(uploadUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "image/png",
+    },
+    body: file,
+  });
+
+  if (!putResponse.ok) {
+    resultDiv.innerHTML = `<p style="color:red;">❌ Failed to upload to S3</p>`;
+    return;
+  }
+
+  // 🔁 הוספת השהייה כאן
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  // ואז נמשיך לשלוח את ה־GET:
   const apiUrl = `https://zj2tr18y1i.execute-api.us-east-1.amazonaws.com/prod/image/${encodeURIComponent(
-    imageName
+    fileKey
   )}`;
+  
 
   try {
-    const response = await fetch(apiUrl); // 🔁 בלי Authorization Header
+    const response = await fetch(apiUrl);
 
     if (!response.ok) {
       throw new Error(`Server returned ${response.status}`);
@@ -40,7 +80,8 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
       )
       .join("");
 
-    resultDiv.innerHTML = `<h3>Labels for <em>${imageName}</em>:</h3>` + html;
+    resultDiv.innerHTML =
+      `<h3>Labels for <em>${originalName}</em>:</h3>` + html;
   } catch (err) {
     resultDiv.innerHTML = `<p style="color:red;">❌ Error: ${err.message}</p>`;
   }

@@ -29,6 +29,7 @@ body {
   main {
     padding: 2rem;
   }
+  
   #demo-section {
     margin-top: 3rem;
     border-top: 1px solid #ccc;
@@ -38,6 +39,8 @@ body {
   #result {
     margin-top: 1rem;
     font-weight: bold;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
   }
-  
   

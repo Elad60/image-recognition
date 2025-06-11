@@ -8,28 +8,40 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   }
 
   const file = input.files[0];
-  resultDiv.innerText = "Uploading... (simulated)";
+  const imageName = file.name;
 
-  // --- שלב אמיתי בהמשך: העלאה ל-S3 ---
+  resultDiv.innerText = "Analyzing image...";
 
-  // המתנה קצרה ואז קריאה מדומה ל-API:
-  setTimeout(() => {
-    // כאן בהמשך תבצע fetch ל-API Gateway
-    const fakeLabels = [
-      { Name: "Person", Confidence: 98.5 },
-      { Name: "Knife", Confidence: 89.2 },
-      { Name: "Table", Confidence: 76.3 },
-    ];
+  const apiUrl = `https://zj2tr18y1i.execute-api.us-east-1.amazonaws.com/prod/image/${encodeURIComponent(
+    imageName
+  )}`;
 
-    const html = fakeLabels
+  try {
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error(`Server returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    const labels = data.labels;
+
+    if (!labels || labels.length === 0) {
+      resultDiv.innerHTML = `<p>No labels found for this image.</p>`;
+      return;
+    }
+
+    const html = labels
       .map(
         (label) =>
-          `<div><strong>${label.Name}</strong>: ${label.Confidence.toFixed(
-            1
-          )}%</div>`
+          `<div><strong>${label.Name}</strong>: ${parseFloat(
+            label.Confidence
+          ).toFixed(1)}%</div>`
       )
       .join("");
 
-    resultDiv.innerHTML = "<h3>Labels:</h3>" + html;
-  }, 1500);
+    resultDiv.innerHTML = `<h3>Labels for <em>${imageName}</em>:</h3>` + html;
+  } catch (err) {
+    resultDiv.innerHTML = `<p style="color:red;">❌ Error: ${err.message}</p>`;
+  }
 });

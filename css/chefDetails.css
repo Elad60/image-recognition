@@ -1,0 +1,104 @@
+.container-xxl {
+  background-color: var(--light); /* Light background from main styling */
+  color: var(--dark); /* Dark text for readability */
+  padding: 40px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+#chef-name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary); /* Primary color for the chef's name */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+#chef-category {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--secondary); /* Secondary color for the category */
+}
+
+#chef-description {
+  font-size: 1rem;
+  color: var(--dark); /* Dark color for descriptive text */
+  margin-bottom: 20px;
+}
+
+.chef-img {
+  border-radius: 10px;
+  max-width: 350px;
+  border: 3px solid var(--primary); /* Primary border around the image */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+  background-color: var(--light); /* Light background for menu items */
+  border-radius: 10px;
+  padding: 15px;
+  color: var(--dark); /* Dark text */
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--primary); /* Primary border */
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: var(--primary); /* Primary color on hover */
+  color: var(--light); /* Light text on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.contact-chef {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: var(--light); /* Light background for contact form */
+  border: 1px solid var(--secondary); /* Secondary border */
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form .form-control {
+  background-color: var(--light);
+  border: 1px solid var(--secondary); /* Secondary border */
+  border-radius: 5px;
+  color: var(--dark);
+  padding: 10px;
+}
+
+.contact-form .form-control:focus {
+  border-color: var(--primary); /* Primary highlight on focus */
+  box-shadow: 0 0 5px rgba(234, 166, 54, 0.2);
+}
+
+.contact-form button {
+  background-color: var(--primary); /* Primary button color */
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--light);
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: var(--secondary); /* Secondary color on hover */
+  color: var(--light); /* Light text on hover */
+  transform: scale(1.05); /* Subtle zoom effect */
+}
+
+.row {
+  margin-bottom: 20px;
+}
+
+h3.text-center.mb-4 {
+  color: var(--primary); /* Primary color for heading */
+}
+.carousel-item img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+}

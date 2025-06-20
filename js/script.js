@@ -1,6 +1,7 @@
 const imageInput = document.getElementById("imageInput");
 const fileNameSpan = document.getElementById("fileName");
 
+
 imageInput.addEventListener("change", function () {
   const file = this.files[0];
   if (file) {
@@ -9,6 +10,21 @@ imageInput.addEventListener("change", function () {
     fileNameSpan.textContent = "No image selected";
   }
 });
+
+// פונקציה לפענוח JWT Token
+function parseJwt(token) {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map((c) => {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}
 
 document.getElementById("uploadBtn").addEventListener("click", async () => {
   const input = document.getElementById("imageInput");
@@ -27,12 +43,31 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   const originalName = file.name;
   resultDiv.innerText = "Uploading and analyzing image...";
 
+  // ⛔ ודא שיש לך את הטוקן ב־localStorage
+  const idToken = localStorage.getItem("idToken");
+  if (!idToken) {
+    resultDiv.innerHTML = `<p style="color:red;">❌ User not authenticated</p>`;
+    uploadBtn.disabled = false;
+    uploadBtn.innerHTML = `<i class="fas fa-upload"></i> Upload & Analyze`;
+    return;
+  }
+
+  const userEmail = parseJwt(idToken).email;
+  console.log("📧 Logged in as:", userEmail);
+
+  // 📤 בקשת יצירת URL חתום
   const uploadResponse = await fetch(
     "https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/upload",
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imageName: originalName }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: idToken,
+      },
+      body: JSON.stringify({
+        imageName: originalName,
+        userEmail: userEmail,
+      }),
     }
   );
 
@@ -47,6 +82,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   const uploadUrl = uploadData.uploadUrl;
   const fileKey = uploadData.fileKey;
 
+  // 📥 העלאת הקובץ בפועל ל־S3
   const putResponse = await fetch(uploadUrl, {
     method: "PUT",
     headers: { "Content-Type": "image/png" },
@@ -60,13 +96,12 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
     return;
   }
 
+  // המתן קצת עד שה־Lambda תעבד את התמונה
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const apiUrl = `https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/image/${encodeURIComponent(
     fileKey
   )}`;
-
-  // ... חלק עליון ללא שינוי
 
   try {
     const response = await fetch(apiUrl);
@@ -74,7 +109,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
     const data = await response.json();
     const labels = data.labels;
-    const isDangerous = data.isDangerous; // ✅ חדש
+    const isDangerous = data.isDangerous;
     const imageUrl = `https://image-recognition-stack-myimageuploadbucket-v1uxcmt4htce.s3.us-east-1.amazonaws.com/${fileKey}`;
 
     if (!labels || labels.length === 0) {
@@ -82,7 +117,6 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
       return;
     }
 
-    // ✅ יצירת תגיות תוויות
     const labelTags = labels
       .map(
         (label) =>
@@ -92,7 +126,6 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
       )
       .join("");
 
-    // ✅ אם התמונה מסוכנת – הצגת אזהרה
     let warningHtml = "";
     if (isDangerous) {
       warningHtml = `
@@ -101,15 +134,15 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
         </div>
       `;
     }
-    // ✅ תצוגת התוצאה המלאה
+
     resultDiv.innerHTML = `
-    ${warningHtml}
-    <img src="${imageUrl}" alt="Uploaded Image" />
-    <div class="labels-container">
-      <h3>Detected Labels</h3>
-      <div class="labels">${labelTags}</div>
-    </div>
-  `;
+      ${warningHtml}
+      <img src="${imageUrl}" alt="Uploaded Image" />
+      <div class="labels-container">
+        <h3>Detected Labels</h3>
+        <div class="labels">${labelTags}</div>
+      </div>
+    `;
   } catch (err) {
     resultDiv.innerHTML = `<p style="color:red;">❌ Error: ${err.message}</p>`;
   } finally {

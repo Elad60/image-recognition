@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>ScanER - Scan</title>
+    <title>ScanER - Pofile</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="keywords" />
     <meta content="" name="description" />
@@ -26,8 +26,7 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet" />
-    <link href="css/scan.css" rel="stylesheet" />
-
+    <link href="css/profileDetails.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -50,7 +49,8 @@
                 <a href="index.html" class="nav-item nav-link">Home</a>
                 <a href="profiles.html" class="nav-item nav-link">Profiles</a>
                 <a href="scan.html" class="nav-item nav-link">Scan</a>
-                <a id="Profilelink" href="myProfile.html" class="nav-item nav-link">My Profile</a>
+
+                <a id="Profilelink" href="myProfile.html" class="nav-item nav-link active">My Profile</a>
             </div>
             <div id="authContainer" class="d-none d-lg-flex">
                 <div class="flex-shrink-0 btn-lg-square border border-light rounded-circle">
@@ -69,49 +69,51 @@
     <div class="container-fluid page-header py-6 wow fadeIn" data-wow-delay="0.1s">
         <div class="container text-center pt-5 pb-3">
             <h1 class="display-4 text-white animated slideInDown mb-3">
-                Scan an Image
+                Pofile
             </h1>
         </div>
     </div>
     <!-- Page Header End -->
-
-    <div class="container-xxl py-6">
+    <!-- profile Details Start -->
+    <!-- profile Details Section -->
+    <div class="container-xxl py-6 mb-5">
         <div class="container">
-            <div id="demo-section">
-                <h2>Start Scanning – Upload Below</h2>
-
-                <div id="result" class="result-container"></div>
-
-
-                <!-- כפתורי העלאה -->
-                <div class="upload-wrapper">
-                    <input type="file" id="imageInput" accept="image/*" hidden />
-                    <div class="file-section">
-                        <label for="imageInput" class="custom-file-btn">
-                  <i class="fas fa-folder-open"></i> Choose Image
-                </label>
-                        <span id="fileName" class="file-name-text">No image selected</span>
-                    </div>
-                    <button id="uploadBtn" class="custom-upload-btn">
-                <i class="fas fa-upload"></i> Upload & Analyze
-              </button>
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <i class="fa fa-user fa-7x text-primary"></i>
                 </div>
-            </div>
-
-            <div id="login-message" class="text-center py-5" style="font-size: 24px; font-weight: bold;">
-                Please sign in to upload and analyze images.
+                <!-- profile Details Text -->
+                <div class="col-lg-9">
+                    <h1 id="profile-name" class="mb-3">profile Name</h1>
+                    <br/>
+                    <h3 id="profile-email" class="mb-3">Email</h3>
+                </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Team End -->
-
-
-
+    <!-- profile Gallery -->
+    <div class="container-xxl py-6 mb-5">
+        <div class="container">
+            <h2 class="mb-4 text-center">profile's Scans</h2>
+            <div id="profileGalleryCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <!-- התמונות יתווספו כאן דרך JavaScript -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#profileGalleryCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#profileGalleryCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+            </div>
+        </div>
+    </div>
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i
-    ></a>
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i>
+    </a>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -125,8 +127,8 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-    <script src="js/script.js"></script>
     <script src="js/loginAWS.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 
 </html>

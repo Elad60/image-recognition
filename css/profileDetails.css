@@ -1,126 +1,220 @@
+/* פרטי פרופיל כלליים */
 .container-xxl {
-    background-color: var(--light);
-    /* Light background from main styling */
-    color: var(--dark);
-    /* Dark text for readability */
-    padding: 40px 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* Soft shadow */
+  background-color: var(--light);
+  color: var(--dark);
+  padding: 40px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 #profile-name {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--primary);
-    /* Primary color for the profile's name */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 #profile-category {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--secondary);
-    /* Secondary color for the category */
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--secondary);
 }
 
 #profile-description {
-    font-size: 1rem;
-    color: var(--dark);
-    /* Dark color for descriptive text */
-    margin-bottom: 20px;
+  font-size: 1rem;
+  color: var(--dark);
+  margin-bottom: 20px;
 }
 
 .profile-img {
-    border-radius: 10px;
-    max-width: 350px;
-    border: 3px solid var(--primary);
-    /* Primary border around the image */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  max-width: 350px;
+  border: 3px solid var(--primary);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .menu-item {
-    background-color: var(--light);
-    /* Light background for menu items */
-    border-radius: 10px;
-    padding: 15px;
-    color: var(--dark);
-    /* Dark text */
-    font-size: 1rem;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 2px solid var(--primary);
-    /* Primary border */
-    transition: all 0.3s ease;
+  background-color: var(--light);
+  border-radius: 10px;
+  padding: 15px;
+  color: var(--dark);
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--primary);
+  transition: all 0.3s ease;
 }
 
 .menu-item:hover {
-    background-color: var(--primary);
-    /* Primary color on hover */
-    color: var(--light);
-    /* Light text on hover */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  background-color: var(--primary);
+  color: var(--light);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .contact-profile {
-    margin-top: 40px;
-    padding: 20px;
-    background-color: var(--light);
-    /* Light background for contact form */
-    border: 1px solid var(--secondary);
-    /* Secondary border */
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+  padding: 20px;
+  background-color: var(--light);
+  border: 1px solid var(--secondary);
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .contact-form .form-control {
-    background-color: var(--light);
-    border: 1px solid var(--secondary);
-    /* Secondary border */
-    border-radius: 5px;
-    color: var(--dark);
-    padding: 10px;
+  background-color: var(--light);
+  border: 1px solid var(--secondary);
+  border-radius: 5px;
+  color: var(--dark);
+  padding: 10px;
 }
 
 .contact-form .form-control:focus {
-    border-color: var(--primary);
-    /* Primary highlight on focus */
-    box-shadow: 0 0 5px rgba(234, 166, 54, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 5px rgba(234, 166, 54, 0.2);
 }
 
 .contact-form button {
-    background-color: var(--primary);
-    /* Primary button color */
-    border: none;
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--light);
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
+  background-color: var(--primary);
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--light);
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
 }
 
 .contact-form button:hover {
-    background-color: var(--secondary);
-    /* Secondary color on hover */
-    color: var(--light);
-    /* Light text on hover */
-    transform: scale(1.05);
-    /* Subtle zoom effect */
+  background-color: var(--secondary);
+  color: var(--light);
+  transform: scale(1.05);
 }
 
 .row {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 h3.text-center.mb-4 {
-    color: var(--primary);
-    /* Primary color for heading */
+  color: var(--primary);
 }
 
-.carousel-item img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
+/* גריד של תמונות סריקה */
+.scan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.scan-card {
+  background-color: #fefefe;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.scan-card:hover {
+  transform: translateY(-4px);
+}
+
+.scan-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+
+.scan-card .scan-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.scan-card .scan-info h5 {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.scan-card .scan-info .badge {
+  margin: 3px;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 12px;
+}
+
+.scan-card .scan-info .badge.bg-danger {
+  background-color: #dc3545;
+}
+
+.scan-card .scan-info .badge.bg-success {
+  background-color: #198754;
+}
+
+/* התאמה לרוחב מלא במובייל */
+@media (max-width: 768px) {
+  .scan-card img {
+    height: 180px;
+  }
+  .scan-card .scan-info {
+    padding: 10px;
+  }
+}
+.profile-card {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ✅ אפקט בזמן ריחוף */
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+  }
+  
+
+.profile-card img {
+  height: 300px; /* ✅ גובה קבוע */
+  object-fit: contain; /* ✅ לא ייחתך */
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 10px;
+}
+
+.card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* ✅ הטקסט תמיד למטה */
+  padding: 20px;
+  text-align: center;
+}
+
+.profile-card h5 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.badge {
+  margin: 2px;
+  font-size: 0.9rem;
+  padding: 6px 10px;
 }

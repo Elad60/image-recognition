@@ -76,24 +76,36 @@
     </div>
     <!-- Page Header End -->
 
-    <!-- Team Start -->
     <div class="container-xxl py-6">
         <div class="container">
-            <!-- Search Chefs Section -->
-            <div id="demo-section" class="d-none">
-                <h2>Start Scanning – Upload Below</h2>
-                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-                <input type="file" id="imageInput" accept="image/*" />
-                <button id="uploadBtn">Upload and Analyze</button>
-                <div id="result"></div>
+          <div id="demo-section">
+            <h2>Start Scanning – Upload Below</h2>
+      
+            <div id="result" class="result-container"></div>
+      
+      
+            <!-- כפתורי העלאה -->
+            <div class="upload-wrapper">
+              <input type="file" id="imageInput" accept="image/*" hidden />
+              <div class="file-section">
+                <label for="imageInput" class="custom-file-btn">
+                  <i class="fas fa-folder-open"></i> Choose Image
+                </label>
+                <span id="fileName" class="file-name-text">No image selected</span>
+              </div>
+              <button id="uploadBtn" class="custom-upload-btn">
+                <i class="fas fa-upload"></i> Upload & Analyze
+              </button>
             </div>
-
-            <div id="login-message" class="text-center py-5" style="font-size: 24px; font-weight: bold;">
-                Please sign in to upload and analyze images.
-            </div>
-
+          </div>
+      
+          <div id="login-message" class="text-center py-5" style="font-size: 24px; font-weight: bold;">
+            Please sign in to upload and analyze images.
+          </div>
         </div>
-    </div>
+      </div>
+      
+      
     <!-- Team End -->
 
 

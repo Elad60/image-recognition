@@ -1,159 +1,167 @@
 #demo-section {
-  background-color: #f8f9fa;
-  border: 2px dashed #6c757d;
-  padding: 40px;
-  border-radius: 12px;
-  text-align: center;
-  margin-top: 30px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    background-color: #f8f9fa;
+    border: 2px dashed #6c757d;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    margin-top: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.container-xxl {
+    padding-top: 20px;
+    /* Bring sections closer to the header */
 }
 
 #demo-section h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
 }
 
 #imageInput {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 #uploadBtn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-weight: bold;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 #uploadBtn:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
+
 .result-container {
-  text-align: center;
-  margin-top: 20px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .result-container img {
-  max-width: 100%;
-  max-height: 400px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 1.5s ease;
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1.5s ease;
 }
 
 .labels-container {
-  margin-top: 20px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .labels-container h3 {
-  text-align: center;
-  color: #333;
+    text-align: center;
+    color: #333;
 }
 
 .label-tag {
-  background-color: #e0f7fa;
-  padding: 10px 15px;
-  border-radius: 20px;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  color: #00796b;
-  margin: 5px;
-  display: inline-block;
+    background-color: #e0f7fa;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    color: #00796b;
+    margin: 5px;
+    display: inline-block;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
+
 .upload-wrapper {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 .custom-file-btn,
 .custom-upload-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .custom-file-btn {
-  background: linear-gradient(45deg, #00c6ff, #0072ff);
-  color: #fff;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: #fff;
 }
 
 .custom-upload-btn {
-  background: linear-gradient(45deg, #43e97b, #38f9d7);
-  color: #fff;
+    background: linear-gradient(45deg, #43e97b, #38f9d7);
+    color: #fff;
 }
 
 .custom-file-btn:hover {
-  background: linear-gradient(45deg, #0072ff, #00c6ff);
+    background: linear-gradient(45deg, #0072ff, #00c6ff);
 }
 
 .custom-upload-btn:hover {
-  background: linear-gradient(45deg, #38f9d7, #43e97b);
+    background: linear-gradient(45deg, #38f9d7, #43e97b);
 }
 
 .custom-file-btn i,
 .custom-upload-btn i {
-  font-size: 18px;
+    font-size: 18px;
 }
+
 .danger-alert {
-  background-color: #ffe5e5;
-  color: #b30000;
-  font-weight: bold;
-  font-size: 18px;
-  padding: 16px 24px;
-  border-radius: 12px;
-  border: 2px solid #b30000;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
-  animation: shakeFade 1s ease both;
+    background-color: #ffe5e5;
+    color: #b30000;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 2px solid #b30000;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+    animation: shakeFade 1s ease both;
 }
 
 @keyframes shakeFade {
-  0% {
-    opacity: 0;
-    transform: translateX(0);
-  }
-  20% {
-    transform: translateX(-8px);
-  }
-  40% {
-    transform: translateX(8px);
-  }
-  60% {
-    transform: translateX(-6px);
-  }
-  80% {
-    transform: translateX(6px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    0% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(-8px);
+    }
+    40% {
+        transform: translateX(8px);
+    }
+    60% {
+        transform: translateX(-6px);
+    }
+    80% {
+        transform: translateX(6px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

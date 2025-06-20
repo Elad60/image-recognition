@@ -38,6 +38,23 @@ function signOut() {
     window.location.href = url;
 }
 
+function getUserInfoFromToken() {
+    const idToken = localStorage.getItem('id_token');
+    if (!idToken) return null;
+
+    try {
+        const payload = JSON.parse(atob(idToken.split('.')[1]));
+        return {
+            username: payload['cognito:username'] || 'User',
+            email: payload['email'] || 'No email',
+            group: payload["cognito:groups"] ? payload["cognito:groups"][0] : null
+        };
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+}
+
 async function exchangeCodeForTokens(code) {
     const tokenEndpoint = `https://${cognitoConfig.Domain}.auth.${cognitoConfig.Region}.amazoncognito.com/oauth2/token`;
 
@@ -90,16 +107,17 @@ function displayUserInfo(idToken) {
             null;
         updateAuthUI(username, userGroup);
     } catch (error) {
-        console.error('Error displaying user info:', error);
+        return null;
     }
 }
 
 function updateAuthUI(username) {
+    console.log('Updating Auth UI with username:', username);
     const userGreeting = document.getElementById('userGreeting');
     const authButton = document.getElementById('authButton');
+    const profileLink = document.getElementById('Profilelink');
     const demoSection = document.getElementById('demo-section');
     const loginMessage = document.getElementById('login-message');
-
     if (username) {
         userGreeting.textContent = `Hello, ${username}`;
         userGreeting.classList.remove('d-none');
@@ -107,7 +125,7 @@ function updateAuthUI(username) {
         authButton.onclick = signOut;
         authButton.classList.remove('btn-primary');
         authButton.classList.add('btn-danger');
-
+        profileLink.classList.remove('d-none'); // הסתרת קישור לפרופיל אם לא מחובר
         demoSection.classList.remove('d-none');
         loginMessage.classList.add('d-none');
 
@@ -118,9 +136,9 @@ function updateAuthUI(username) {
         authButton.onclick = signIn;
         authButton.classList.remove('btn-danger');
         authButton.classList.add('btn-primary');
-
+        profileLink.classList.add('d-none'); // הסתרת קישור לפרופיל אם לא מחובר
         demoSection.classList.add('d-none');
-        loginMessage.classList.remove('d-none');
+        loginMessage.classList.remove('d-none')
     }
 
     document.getElementById('authContainer').classList.remove('d-none');

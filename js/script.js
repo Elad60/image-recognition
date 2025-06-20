@@ -66,12 +66,15 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
     fileKey
   )}`;
 
+  // ... חלק עליון ללא שינוי
+
   try {
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error(`Server returned ${response.status}`);
 
     const data = await response.json();
     const labels = data.labels;
+    const isDangerous = data.isDangerous; // ✅ חדש
     const imageUrl = `https://image-recognition-stack-myimageuploadbucket-v1uxcmt4htce.s3.us-east-1.amazonaws.com/${fileKey}`;
 
     if (!labels || labels.length === 0) {
@@ -79,6 +82,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
       return;
     }
 
+    // ✅ יצירת תגיות תוויות
     const labelTags = labels
       .map(
         (label) =>
@@ -88,13 +92,24 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
       )
       .join("");
 
+    // ✅ אם התמונה מסוכנת – הצגת אזהרה
+    let warningHtml = "";
+    if (isDangerous) {
+      warningHtml = `
+        <div class="danger-alert">
+          ⚠️ Dangerous object detected in this image!
+        </div>
+      `;
+    }
+    // ✅ תצוגת התוצאה המלאה
     resultDiv.innerHTML = `
-      <img src="${imageUrl}" alt="Uploaded Image" />
-      <div class="labels-container">
-        <h3>Detected Labels</h3>
-        <div class="labels">${labelTags}</div>
-      </div>
-    `;
+    ${warningHtml}
+    <img src="${imageUrl}" alt="Uploaded Image" />
+    <div class="labels-container">
+      <h3>Detected Labels</h3>
+      <div class="labels">${labelTags}</div>
+    </div>
+  `;
   } catch (err) {
     resultDiv.innerHTML = `<p style="color:red;">❌ Error: ${err.message}</p>`;
   } finally {

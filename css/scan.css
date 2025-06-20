@@ -122,3 +122,38 @@
 .custom-upload-btn i {
   font-size: 18px;
 }
+.danger-alert {
+  background-color: #ffe5e5;
+  color: #b30000;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 2px solid #b30000;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+  animation: shakeFade 1s ease both;
+}
+
+@keyframes shakeFade {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

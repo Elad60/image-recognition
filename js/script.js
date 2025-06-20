@@ -14,7 +14,7 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
 
   // שלב 1: בקשת כתובת חתומה
   const uploadResponse = await fetch(
-    "https://zj2tr18y1i.execute-api.us-east-1.amazonaws.com/prod/upload",
+    "https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/upload",
     {
       method: "POST",
       headers: {
@@ -48,13 +48,12 @@ document.getElementById("uploadBtn").addEventListener("click", async () => {
   }
 
   // 🔁 הוספת השהייה כאן
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   // ואז נמשיך לשלוח את ה־GET:
-  const apiUrl = `https://zj2tr18y1i.execute-api.us-east-1.amazonaws.com/prod/image/${encodeURIComponent(
+  const apiUrl = `https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/image/${encodeURIComponent(
     fileKey
   )}`;
-  
 
   try {
     const response = await fetch(apiUrl);

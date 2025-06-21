@@ -16,9 +16,11 @@ $(document).ready(function () {
   imageInput.addEventListener("change", function () {
     const file = this.files[0];
     if (file) {
-      fileNameSpan.textContent = `✅ Selected: ${file.name}`;
+      fileNameSpan.classList.remove("visually-hidden", "hidden");
+      fileNameSpan.textContent = file.name;
     } else {
-      fileNameSpan.textContent = "No image selected";
+      fileNameSpan.textContent = "";
+      fileNameSpan.classList.add("hidden");
     }
   });
 

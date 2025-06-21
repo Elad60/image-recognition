@@ -30,7 +30,16 @@ $(document).ready(function () {
       return;
     }
 
-    scanResults.html(`<p>🔍 Scanning ${urlToScan} ... Please wait...</p>`);
+    scanResults.html(`
+        <div class="text-center scanning-msg my-4">
+          <div class="fw-bold fs-4 text-primary mb-2">
+            🔍 Scanning <span class="text-dark">${urlToScan}</span>
+          </div>
+          <div class="fs-5 text-secondary fst-italic">
+            Please wait while we analyze the page...
+          </div>
+        </div>
+      `);      
     scanButton
       .prop("disabled", true)
       .html(`<i class="fas fa-spinner fa-spin"></i> Scanning...`);

@@ -39,7 +39,7 @@ $(document).ready(function () {
             Please wait while we analyze the page...
           </div>
         </div>
-      `);      
+      `);
     scanButton
       .prop("disabled", true)
       .html(`<i class="fas fa-spinner fa-spin"></i> Scanning...`);
@@ -110,13 +110,18 @@ function renderScanResults(data) {
     const titleClass = isFlagged ? "text-danger" : "text-success";
     const title = isFlagged ? "⚠️ Flagged" : "✅ Safe";
 
+    // רק אם התמונה flagged – מציגים את התוויות
+    const labelHtml = isFlagged
+      ? `<p class="card-text"><strong>Labels:</strong> ${labels}</p>`
+      : "";
+
     const card = $(`
         <div class="col-md-4 col-sm-6">
           <div class="card ${borderClass} h-100 shadow">
             <img src="${img.image}" class="card-img-top" alt="Scanned image" onload="checkSize(this)">
             <div class="card-body d-flex flex-column justify-content-center text-center">
               <h5 class="card-title ${titleClass}">${title}</h5>
-              <p class="card-text"><strong>Labels:</strong> ${labels}</p>
+              ${labelHtml}
             </div>
           </div>
         </div>
@@ -127,7 +132,6 @@ function renderScanResults(data) {
 
   scanResults.append(grid);
 
-  // הצגת כפתור הצגת תמונות רק אם יש flagged
   $("#showImagesBtn").on("click", () => {
     $("#imagesGrid").removeClass("d-none");
     $("#showImagesBtn").hide();

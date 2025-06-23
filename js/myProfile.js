@@ -6,7 +6,7 @@ $(document).ready(async function () {
   try {
     const token = localStorage.getItem("id_token");
     const response = await fetch(
-      "https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/profile",
+      "https://ymj65ginm4.execute-api.us-east-1.amazonaws.com/prod/profile",
       {
         method: "GET",
         headers: {
@@ -27,14 +27,16 @@ $(document).ready(async function () {
     }
 
     scans.forEach((scan) => {
-      const imgUrl = `https://image-recognition-stack-myimageuploadbucket-v1uxcmt4htce.s3.us-east-1.amazonaws.com/${scan.ImageName}`;
+      const imgUrl = `https://image-recognition-stack-myimageuploadbucket-am7grb92qwe7.s3.us-east-1.amazonaws.com/${scan.ImageName}`;
 
       const labelHtml = scan.Labels.map(
         (label) =>
           `<span class="badge bg-${
             scan.IsDangerous ? "danger" : "success"
-          } me-1 mb-1">${label.Name} (${label.Confidence}%)</span>`
-      ).join(" ");
+          } me-1 mb-1">${label.Name} (${parseFloat(label.Confidence).toFixed(
+            1
+          )}%)</span>`
+      ).join(" ");      
 
       const card = `
           <div class="col-md-6 col-lg-4">

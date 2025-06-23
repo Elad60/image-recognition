@@ -48,7 +48,7 @@ $(document).ready(function () {
 
     try {
       const uploadResponse = await fetch(
-        "https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/upload",
+        "https://ymj65ginm4.execute-api.us-east-1.amazonaws.com/prod/upload",
         {
           method: "POST",
           headers: {
@@ -81,9 +81,8 @@ $(document).ready(function () {
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      const apiUrl = `https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/image/${encodeURIComponent(
-        fileKey
-      )}`;
+      const apiUrl = `https://ymj65ginm4.execute-api.us-east-1.amazonaws.com/prod/image?imageName=${fileKey}`;
+
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
@@ -93,7 +92,11 @@ $(document).ready(function () {
       const data = await response.json();
       const labels = data.labels;
       const isDangerous = data.isDangerous;
-      const imageUrl = `https://image-recognition-stack-myimageuploadbucket-v1uxcmt4htce.s3.us-east-1.amazonaws.com/${fileKey}`;
+      const imageUrl = `https://image-recognition-stack-myimageuploadbucket-am7grb92qwe7.s3.us-east-1.amazonaws.com/${decodeURIComponent(
+        fileKey
+      )}`;
+      console.log("Image URL:" + imageUrl)
+      console.log("api URL:" + apiUrl);
 
       if (!labels || labels.length === 0) {
         resultDiv.innerHTML = `<p>No labels found for this image.</p>`;

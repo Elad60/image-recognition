@@ -39,14 +39,14 @@ $(document).ready(function () {
             Please wait while we analyze the page...
           </div>
         </div>
-      `);      
+      `);
     scanButton
       .prop("disabled", true)
       .html(`<i class="fas fa-spinner fa-spin"></i> Scanning...`);
 
     try {
       const apiUrl =
-        "https://btgjcut471.execute-api.us-east-1.amazonaws.com/prod/scan-page";
+        "https://ymj65ginm4.execute-api.us-east-1.amazonaws.com/prod/scan-page";
 
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -56,6 +56,8 @@ $(document).ready(function () {
         },
         body: JSON.stringify({ url: urlToScan }),
       });
+      console.log("Payload:", JSON.stringify({ url: urlToScan }));
+
 
       if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);

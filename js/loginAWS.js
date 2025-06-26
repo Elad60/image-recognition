@@ -4,7 +4,7 @@ const cognitoConfig = {
     Domain: "us-east-19jYmrBTIf",
     ClientSecret: "b1png91iphbnmbnerepr69oa5lf7ebh1i9na70mt5pu0bp47rof",
     Region: "us-east-1",
-    redirectUri: "http://localhost:5500/index.html",
+    redirectUri: "https://website-scaner.s3.us-east-1.amazonaws.com/index.html",
 };
 
 $(document).ready(function() {

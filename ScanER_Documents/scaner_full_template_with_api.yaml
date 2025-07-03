@@ -1,0 +1,230 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Full ScanER infrastructure (Lambda code uploaded separately)
+
+Resources:
+
+  MyImageUploadBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub image-recognition-stack-myimageuploadbucket-${AWS::StackName}
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt DetectImageFunction.Arn
+
+  MyImageUploadBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MyImageUploadBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyUnsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !Sub "${MyImageUploadBucket.Arn}"
+              - !Sub "${MyImageUploadBucket.Arn}/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+  ImageLabelsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ImageLabels-${AWS::StackName}
+      AttributeDefinitions:
+        - AttributeName: ImageName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ImageName
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  MyImageMetadataTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub MyImageMetadataTable-${AWS::StackName}
+      AttributeDefinitions:
+        - AttributeName: User
+          AttributeType: S
+      KeySchema:
+        - AttributeName: User
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub AlertTopic-${AWS::StackName}
+
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub ScanER-UserPool-${AWS::StackName}
+      AutoVerifiedAttributes:
+        - email
+
+  UserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: WebClient
+      UserPoolId: !Ref UserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  AllowS3InvokeDetectImage:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt DetectImageFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !GetAtt MyImageUploadBucket.Arn
+
+  DetectImageFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub DetectImage-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+  UploadPresignedUrlFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub UploadPresignedUrl-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+  GetImageLabelsFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub GetImageLabels-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+  GetUserScansFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub GetUserScans-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+  GetProfilesUploadCountFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub GetProfilesUploadCount-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+  ScanURLFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ScanURL-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+  ScanPageImagesFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub ScanPageImages-${AWS::StackName}
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 30
+      Role: arn:aws:iam::776565580225:role/LabRole
+      Code: {}
+
+Outputs:
+
+  ApiInvokeUrl:
+    Value: !Sub https://${ApiGatewayRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/image
+  UploadBucketName:
+    Value: !Ref MyImageUploadBucket
+  ImageLabelsTableName:
+    Value: !Ref ImageLabelsTable
+  MetadataTableName:
+    Value: !Ref MyImageMetadataTable
+  AlertTopicArn:
+    Value: !Ref AlertTopic
+  UserPoolId:
+    Value: !Ref UserPool
+  UserPoolClientId:
+    Value: !Ref UserPoolClient
+
+  MyAlertTopicParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /ScanER/AlertTopicArn
+      Type: String
+      Value: !Ref AlertTopic
+
+  ApiGatewayRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: !Sub ScanERApi-${AWS::StackName}
+
+  ApiGatewayResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      ParentId: !GetAtt ApiGatewayRestApi.RootResourceId
+      PathPart: image
+      RestApiId: !Ref ApiGatewayRestApi
+
+  ApiGatewayMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      AuthorizationType: COGNITO_USER_POOLS
+      AuthorizerId: !Ref ApiCognitoAuthorizer
+      HttpMethod: GET
+      ResourceId: !Ref ApiGatewayResource
+      RestApiId: !Ref ApiGatewayRestApi
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub >-
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${GetImageLabelsFunction.Arn}/invocations
+
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApiGatewayMethod
+    Properties:
+      RestApiId: !Ref ApiGatewayRestApi
+      StageName: prod
+
+  ApiCognitoAuthorizer:
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: ScanERCognitoAuthorizer
+      Type: COGNITO_USER_POOLS
+      IdentitySource: method.request.header.Authorization
+      RestApiId: !Ref ApiGatewayRestApi
+      ProviderARNs:
+        - !GetAtt UserPool.Arn
+
+  LambdaInvokePermissionApi:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt GetImageLabelsFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayRestApi}/*/*/image

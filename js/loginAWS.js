@@ -22,7 +22,7 @@ $(document).ready(function() {
             const currentUrl = window.location.origin + window.location.pathname; // משאיר רק את ה-URL הבסיסי
             window.history.replaceState({}, document.title, currentUrl); // מחליף את ה-URL בלי לרענן את הדף
         } else {
-            updateAuthUI(null);
+            updateAuthUI(null, null);
         }
     }
 });
@@ -124,13 +124,19 @@ function displayUserInfo(idToken) {
     }
 }
 
-function updateAuthUI(username) {
+function updateAuthUI(username, userGroup) {
     console.log("Updating Auth UI with username:", username);
+    console.log("group:", userGroup);
+
     const userGreeting = document.getElementById("userGreeting");
     const authButton = document.getElementById("authButton");
     const profileLink = document.getElementById("Profilelink");
     const demoSection = document.getElementById("demo-section");
     const loginMessage = document.getElementById("login-message");
+    const Communitylink = document.getElementById("Communitylink");
+
+    console.log("Community link element found:", !!Communitylink);
+
     if (username) {
         userGreeting.textContent = `Hello, ${username}`;
         userGreeting.classList.remove("d-none");
@@ -139,8 +145,23 @@ function updateAuthUI(username) {
         authButton.classList.remove("btn-primary");
         authButton.classList.add("btn-danger");
         profileLink.classList.remove("d-none"); // הסתרת קישור לפרופיל אם לא מחובר
-        demoSection.classList.remove("d-none");
-        loginMessage.classList.add("d-none");
+
+        if (demoSection) demoSection.classList.remove("d-none");
+        if (loginMessage) loginMessage.classList.add("d-none");
+
+        // Handle community link visibility
+        if (Communitylink) {
+            console.log("Checking user group:", userGroup, "Is Admin?", userGroup === 'Admin');
+            if (userGroup === 'Admin') {
+                console.log("Showing community link for Admin");
+                Communitylink.classList.remove('d-none');
+            } else {
+                console.log("Hiding community link for non-Admin");
+                Communitylink.classList.add('d-none');
+            }
+        } else {
+            console.log("Community link element not found on this page");
+        }
     } else {
         userGreeting.textContent = "";
         userGreeting.classList.add("d-none");
@@ -149,8 +170,14 @@ function updateAuthUI(username) {
         authButton.classList.remove("btn-danger");
         authButton.classList.add("btn-primary");
         profileLink.classList.add("d-none"); // הסתרת קישור לפרופיל אם לא מחובר
-        demoSection.classList.add("d-none");
-        loginMessage.classList.remove("d-none");
+
+        if (Communitylink) {
+            console.log("Hiding community link for non-logged in user");
+            Communitylink.classList.add("d-none");
+        }
+
+        if (demoSection) demoSection.classList.add("d-none");
+        if (loginMessage) loginMessage.classList.remove("d-none");
     }
 
     document.getElementById("authContainer").classList.remove("d-none");

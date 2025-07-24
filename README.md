@@ -64,23 +64,35 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 ## Usage
 
-- **Image Inspector:** Upload an image to check for unsafe content.
-- **Page Analysis:** Enter a URL to scan all images on a webpage.
-- **Profile:** View your scan history and moderation results.
+### 1. Image Inspector
 
----
+- Go to the main page (`index.html`).
+- Click the 'Choose Image' button and select an image file from your computer.
+- Click 'Upload & Analyze'.
+- The system will upload your image, analyze it using Amazon Rekognition, and display the results, including detected labels and whether the image is safe or contains harmful content.
 
-## Screenshots
+![Image Inspector Screenshot](images/usage-image-inspector.png)
 
-> _Add screenshots of the main UI pages here for extra impact in interviews._
+### 2. Page Analysis
 
----
+- Navigate to the 'Page Analysis' section (`scanPage.html`).
+- Enter the URL of any public webpage you want to scan.
+- Click 'Start Web Scan'.
+- The system will fetch images from the provided URL, analyze each one for unsafe content, and show a summary of flagged images and details for each image.
 
-## License
+![Page Analysis Screenshot](images/usage-page-analysis.png)
 
-This project is for demonstration and interview purposes only.
+### 3. Profile
 
----
+- Go to the 'My Profile' page (`myProfile.html`).
+- View your scan history, including all images you have uploaded and their moderation results.
+- Each entry shows the image, detected labels, and whether it was flagged as dangerous or safe.
+
+![Profile Screenshot](images/usage-profile.png)
+
+> **Note:** You must be signed in to use the Image Inspector and Profile features. Page Analysis can be used without signing in, but results will not be saved to your profile.
+
+
 
 ## Setup & Deployment
 

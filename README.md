@@ -1,110 +1,93 @@
-# 🔍 ScanER – AI-Powered Image Moderation Platform
-![ScanER UI Preview](images/architecture-diagram.JPEG)
+# ScanER
 
-ScanER is a full-stack serverless web application using AI to detect harmful content in images and webpages. Built with AWS services.
+**AI-Powered Image Moderation Platform**
 
 ---
 
-## 📌 Project Overview
+## Overview
 
-ScanER allows:
-- Uploading images to detect unsafe content using Amazon Rekognition
-- Scanning webpages and analyzing embedded images
-- Viewing personal scan history
-- Admins exploring scans performed across the platform
+ScanER is a full-stack web application that leverages artificial intelligence to detect inappropriate or harmful content in images. Designed for developers, platform owners, and content managers, ScanER provides fast, accurate, and privacy-focused moderation to keep platforms safe and compliant.
 
-Built with:
+---
+
+## Technologies Used
+
 - **Frontend:** HTML, CSS (Bootstrap), JavaScript (jQuery)
-- **Backend:** AWS Lambda (Python), Rekognition, S3, DynamoDB, Cognito, API Gateway, SNS
+- **Backend:** AWS Lambda (Python), Amazon Rekognition, API Gateway, S3, DynamoDB, SNS
+- **Authentication:** Amazon Cognito
 - **Infrastructure:** AWS CloudFormation
 
 ---
 
-## 🧱 System Architecture
+## Features
 
-![ScanER Architecture Diagram](images/architecture-diagram.JPEG)
-
-<div align="center">
-  <img src="images/UML-Sequence.jpeg" alt="ScanER Sequence Diagram" width="600" height="800"/>
-</div>
-
-### 🗂 Amazon DynamoDB
-- `ImageLabels`: Stores scan results for each uploaded image
-- `MyImageMetadataTable`: Stores user metadata and scan history
-
-### 🖼 Amazon S3
-- `ScanERImageBucket`: Stores uploaded image files
-
-### 👥 Amazon Cognito
-- Manages user authentication and session tokens
-- Supports sign-up, login, and token-based access
-
-### ⚙ AWS Lambda Functions
-- `DetectImage`: Analyze images with Rekognition
-- `UploadPresignedUrl`: Get upload URLs
-- `GetImageLabels`: Retrieve analysis results
-- `GetUserScans`: View user history
-- `GetProfilesUploadCount`: Admin stats
-- `ScanURL`: Scan image from URL
-- `ScanPageImages`: Scan all images from a webpage
-
-### 📡 Amazon SNS
-- Sends alerts for dangerous labels (e.g. Gun, Weapon)
-
-### 🌐 Amazon API Gateway
-- Connects frontend requests to Lambda with Cognito auth
+- **AI-Based Image Moderation:** Detects nudity, violence, hate symbols, and more using advanced AI models.
+- **Image Inspector:** Upload and analyze images for unsafe content in real time.
+- **Webpage Scanner:** Scan any public webpage for images and analyze them for harmful content.
+- **User Profiles:** View your scan history and moderation results.
+- **Community (Admin Feature):** Explore scans from other users
+- **Authentication:** Secure sign-in with AWS Cognito.
+- **Modern UI:** Responsive, user-friendly interface built with Bootstrap and jQuery.
 
 ---
 
-## 💻 Frontend Pages
+## Architecture
 
-| File             | Description                                 |
-|------------------|---------------------------------------------|
-| `index.html`     | Landing and image upload                    |
-| `urlscan.html`   | Scan public webpage                         |
-| `profile.html`   | View personal scan history                  |
-| `community.html` | Admin: Explore scans from all users         |
+ScanER is built on a robust AWS serverless stack:
 
-### Key JavaScript Files
+- **Frontend:** HTML, CSS (Bootstrap), JavaScript (jQuery)
+- **Authentication:** Amazon Cognito
+- **Backend:**
+  - AWS Lambda (Python) for image analysis, URL scanning, and user management
+  - Amazon Rekognition for AI-powered image content analysis
+  - Amazon S3 for image storage
+  - Amazon DynamoDB for metadata and scan results
+  - Amazon API Gateway for secure API access
+  - Amazon SNS for alerting
+- **Deployment:** AWS CloudFormation for infrastructure as code
 
-- `main.js`: UI logic and layout
-- `auth.js`: Cognito login/register
-- `upload.js`: Upload + moderate images
-- `urlscan.js`: URL-based scanning
-- `profile.js`: Display scan history
-- `community.js`: Admin stats view
+### High-Level Diagram
 
----
+```
+User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / DynamoDB / Cognito
+```
 
-## 🎨 User Interface Design
+#### AWS Architecture Diagram
 
-- Role-based navigation (SimpleUser vs Admin)
-- Bootstrap-based responsive layout
-- Friendly and clear result UI
-- Color-coded moderation labels
+![AWS Architecture Diagram](images/architecture-diagram.JPEG)
 
----
+#### UML Sequence Diagram
 
-## 🧪 Demo & Testing
-
-### Test Users
-
-| Role        | Email              | Password    |
-|-------------|--------------------|-------------|
-| Admin       | admin@scaner.com   | Admin123!   |
-| SimpleUser  | user@scaner.com    | User123!    |
-
-### Online Demo
-
-🔗 https://scaner-app-files.s3.us-east-1.amazonaws.com/index.html
+![UML Sequence Diagrams](images/UML-Sequence.jpeg)
 
 ---
 
-## 🔧 Installation & Deployment
+## Usage
 
-> Requires AWS CLI, CloudFormation, and S3
+- **Image Inspector:** Upload an image to check for unsafe content.
+- **Page Analysis:** Enter a URL to scan all images on a webpage.
+- **Profile:** View your scan history and moderation results.
 
-### 1. Prepare Lambda ZIPs
+---
+
+## Screenshots
+
+> _Add screenshots of the main UI pages here for extra impact in interviews._
+
+---
+
+## License
+
+This project is for demonstration and interview purposes only.
+
+---
+
+## Setup & Deployment
+
+### 1. AWS CloudShell Setup
+
+- Upload `template.yaml` and all Lambda `.py` files to CloudShell.
+- Zip each Lambda function as shown below:
 
 ```bash
 mkdir lambdas && cd lambdas
@@ -115,6 +98,7 @@ zip getuserscans.zip get_user_scans.py
 zip getprofilesuploadcount.zip get_profiles_upload_count.py
 zip scanurl.zip scan_url.py
 zip scanpageimages.zip scan_page_images.py
+```
 
 ### 2. Deploy CloudFormation Stack
 
@@ -127,33 +111,25 @@ aws cloudformation deploy \
 
 ### 3. Upload Lambda Code
 
+Update each Lambda function with your zipped code:
+
 ```bash
 aws lambda update-function-code --function-name DetectImage-ScanERstack --zip-file fileb://lambdas/detectimage.zip
-aws lambda update-function-code --function-name UploadPresignedUrl-ScanERstack --zip-file fileb://lambdas/uploadpresignedurl.zip
-aws lambda update-function-code --function-name GetImageLabels-ScanERstack --zip-file fileb://lambdas/getimagelabels.zip
-aws lambda update-function-code --function-name GetUserScans-ScanERstack --zip-file fileb://lambdas/getuserscans.zip
-aws lambda update-function-code --function-name GetProfilesUploadCount-ScanERstack --zip-file fileb://lambdas/getprofilesuploadcount.zip
-aws lambda update-function-code --function-name ScanURL-ScanERstack --zip-file fileb://lambdas/scanurl.zip
-aws lambda update-function-code --function-name ScanPageImages-ScanERstack --zip-file fileb://lambdas/scanpageimages.zip
+# ...repeat for each function
 ```
 
-### 4. Create & Confirm Cognito User
+### 4. Cognito User Setup
 
 ```bash
-aws cognito-idp sign-up \
-  --client-id <CLIENT_ID> \
-  --username user@scaner.com \
-  --password User123!
-
-aws cognito-idp admin-confirm-sign-up \
-  --user-pool-id <USER_POOL_ID> \
-  --username user@scaner.com
+aws cognito-idp sign-up --client-id <CLIENT_ID> --username test@example.com --password <PASSWORD>
+aws cognito-idp admin-confirm-sign-up --user-pool-id <USER_POOL_ID> --username test@example.com
 ```
 
-### 5. API Testing Example
+### 5. API Testing
+
+- Use your Cognito ID token to call the API:
 
 ```bash
-curl -X GET \
-  'https://<API_ID>.execute-api.us-east-1.amazonaws.com/prod/image?imageName=test.png' \
+curl -X GET 'https://<API_ID>.execute-api.us-east-1.amazonaws.com/prod/image?imageName=test_image.png' \
   -H 'Authorization: <ID_TOKEN>'
 ```

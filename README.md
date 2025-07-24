@@ -1,6 +1,5 @@
-# ScanER
+# **ScanER** - AI-Powered Image Moderation Platform
 
-**AI-Powered Image Moderation Platform**
 
 [🔗 Try It Live](https://your-live-site-link.com)
 ---

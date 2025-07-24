@@ -1,7 +1,7 @@
 # **ScanER** - AI-Powered Image Moderation Platform
 
 
-[🔗 Try It Live](https://your-live-site-link.com)
+[🔗 Try It Live](https://website-scaner.s3.us-east-1.amazonaws.com/index.html)
 ---
 
 ![ScanER Screenshot](images/1.png)

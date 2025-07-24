@@ -2,7 +2,10 @@
 
 **AI-Powered Image Moderation Platform**
 
+[🔗 Try It Live](https://your-live-site-link.com)
 ---
+
+![ScanER Screenshot](images/1.png)
 
 ## Overview
 
@@ -54,7 +57,7 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 #### AWS Architecture Diagram
 
-![AWS Architecture Diagram](images/architecture-diagram.JPEG)
+![AWS Architecture Diagram](images/architecture-diagram.jpeg)
 
 #### UML Sequence Diagram
 
@@ -66,7 +69,7 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 ### 1. Image Inspector
 
-- Go to the main page (`index.html`).
+- Go to the Image Inspector page
 - Click the 'Choose Image' button and select an image file from your computer.
 - Click 'Upload & Analyze'.
 - The system will upload your image, analyze it using Amazon Rekognition, and display the results, including detected labels and whether the image is safe or contains harmful content.
@@ -75,7 +78,7 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 ### 2. Page Analysis
 
-- Navigate to the 'Page Analysis' section (`scanPage.html`).
+- Navigate to the 'Page Analysis' section
 - Enter the URL of any public webpage you want to scan.
 - Click 'Start Web Scan'.
 - The system will fetch images from the provided URL, analyze each one for unsafe content, and show a summary of flagged images and details for each image.
@@ -84,7 +87,7 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 ### 3. Profile
 
-- Go to the 'My Profile' page (`myProfile.html`).
+- Go to the 'My Profile' page
 - View your scan history, including all images you have uploaded and their moderation results.
 - Each entry shows the image, detected labels, and whether it was flagged as dangerous or safe.
 
@@ -92,7 +95,25 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 > **Note:** You must be signed in to use the Image Inspector and Profile features. Page Analysis can be used without signing in, but results will not be saved to your profile.
 
+---
 
+## Lambda Functions
+
+- **ScanURL** – Scrapes a given webpage for image URLs (from `<img>`, CSS, and metadata), downloads and filters out irrelevant images (e.g. small or blank), then analyzes each valid image using Amazon Rekognition. Returns detected labels, flags dangerous content, and includes base64 previews.
+
+- **DetectImage** – Triggered by new image uploads to S3. Analyzes the image using Amazon Rekognition, saves detected labels to DynamoDB, and sends an SNS alert if dangerous content (e.g. gun, knife) is found.
+
+- **GetImageLabels** – Retrieves the detected labels for a specific image from DynamoDB, typically used to display results to the user.
+
+- **GetUserScans** – Returns a list of all scanned images associated with a specific user, including metadata.
+
+- **GetProfilesUploadCount** – Aggregates and returns how many images each user has uploaded, useful for admin analytics and insights.
+
+- **ScanPageImages** – Given a webpage URL, extracts and scans all images on the page using Rekognition, similar to `ScanURL` but focused on bulk analysis.
+
+- **UploadPresignedUrl** – Generates a secure, time-limited S3 upload URL that allows users to upload images directly from the frontend without exposing AWS credentials.
+
+---
 
 ## Setup & Deployment
 

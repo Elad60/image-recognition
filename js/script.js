@@ -14,10 +14,10 @@ $(document).ready(function () {
       allowOutsideClick: false,
     }).then((result) => {
       if (result.isConfirmed) {
-        if (typeof signIn === 'function') {
+        if (typeof signIn === "function") {
           signIn(); // Use the same Cognito sign-in as the main app
         } else {
-          window.location.replace('index.html'); // fallback
+          window.location.replace("index.html"); // fallback
         }
       } else {
         // Go to scanPage.html without showing the alert again

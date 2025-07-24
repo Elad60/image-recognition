@@ -2,24 +2,14 @@ $(document).ready(function () {
   const userInfo = getUserInfoFromToken();
   const token = localStorage.getItem("id_token");
 
-  // Remove alert and redirect for not logged-in users. Only hide scan section and show login message.
   const demoSection = $("#demo-section");
-  const loginMessage = $("#login-message");
   const scanButton = $("#scanButton");
   const urlInput = $("#urlInput");
   const scanResults = $("#scanResults");
 
-  // אם המשתמש לא מחובר – הסתר סריקה
-  if (!userInfo || !token) {
-    demoSection.addClass("d-none");
-    loginMessage.removeClass("d-none");
-    return;
-  } else {
-    demoSection.removeClass("d-none");
-    loginMessage.addClass("d-none");
-  }
+  // Always show the scan section to all users
+  demoSection.removeClass("d-none");
 
-  // לחיצה על כפתור הסריקה
   scanButton.on("click", async () => {
     const urlToScan = urlInput.val().trim();
     if (!urlToScan || !urlToScan.startsWith("http")) {
@@ -49,12 +39,17 @@ $(document).ready(function () {
       const apiUrl =
         "https://ymj65ginm4.execute-api.us-east-1.amazonaws.com/prod/scan-page";
 
+      // Only add Authorization header if token exists
+      const headers = {
+        "Content-Type": "application/json",
+      };
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const response = await fetch(apiUrl, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers,
         body: JSON.stringify({ url: urlToScan }),
       });
       console.log("Payload:", JSON.stringify({ url: urlToScan }));

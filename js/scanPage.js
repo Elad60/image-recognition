@@ -2,6 +2,7 @@ $(document).ready(function () {
   const userInfo = getUserInfoFromToken();
   const token = localStorage.getItem("id_token");
 
+  // Remove alert and redirect for not logged-in users. Only hide scan section and show login message.
   const demoSection = $("#demo-section");
   const loginMessage = $("#login-message");
   const scanButton = $("#scanButton");
@@ -58,7 +59,6 @@ $(document).ready(function () {
       });
       console.log("Payload:", JSON.stringify({ url: urlToScan }));
 
-
       if (!response.ok)
         throw new Error(`Server responded with ${response.status}`);
 
@@ -83,47 +83,54 @@ function renderScanResults(data) {
 
   const { images, flaggedCount, totalImages, url } = data;
 
-  // הודעה מסכמת
+  // Always show a summary message
   const statusHtml =
     flaggedCount > 0
       ? `<div class="alert alert-danger text-center">
-            ⚠️ This site contains <strong>${flaggedCount}</strong> potentially dangerous images out of <strong>${totalImages}</strong>.
-          </div>
-          <div class="text-center mb-4">
-            <button id="showImagesBtn" class="custom-upload-btn">Show flagged & scanned images</button>
+            \u26a0\ufe0f This site contains <strong>${flaggedCount}</strong> potentially dangerous images out of <strong>${totalImages}</strong>.
           </div>`
       : `<div class="alert alert-success text-center">
-            ✅ This site is safe. No dangerous images found out of <strong>${totalImages}</strong>.
+            \u2705 This site is safe. No dangerous images found out of <strong>${totalImages}</strong>.
           </div>`;
 
+  // Add AWS anti-bot info message
+  const infoHtml = `<div class="alert alert-info text-center" style="margin-top: 10px;">
+    Please note: For AWS anti-bot protection, a maximum of 10 images can be scanned per website. As a result, not all images on the page may be analyzed.
+  </div>`;
+
   scanResults.append(statusHtml);
+  scanResults.append(infoHtml);
 
   if (!images || images.length === 0) {
     scanResults.append(`<p>No images found on this page.</p>`);
     return;
   }
 
-  const grid = $('<div class="row g-4 d-none" id="imagesGrid"></div>');
+  // Decide if grid should be hidden by default
+  const gridClass = flaggedCount > 0 ? "row g-4 d-none" : "row g-4";
+  const grid = $(`<div class="${gridClass}" id="imagesGrid"></div>`);
 
   images.forEach((img) => {
     const isFlagged = img.isFlagged;
     const labels = img.labels?.join(", ") || "None";
     const borderClass = isFlagged ? "border-danger" : "border-success";
     const titleClass = isFlagged ? "text-danger" : "text-success";
-    const title = isFlagged ? "⚠️ Flagged" : "✅ Safe";
+    const title = isFlagged ? "\u26a0\ufe0f Flagged" : "\u2705 Safe";
 
-    // רק אם התמונה flagged – מציגים את התוויות
-    const labelHtml = isFlagged
-      ? `<p class="card-text"><strong>Labels:</strong> ${labels}</p>`
-      : "";
+    // Always show labels
+    const labelHtml = `<p class="card-text"><strong>Labels:</strong> ${labels}</p>`;
 
     const card = $(`
         <div class="col-md-4 col-sm-6">
           <div class="card ${borderClass} h-100 shadow">
-            <img src="${img.image}" class="card-img-top" alt="Scanned image" onload="checkSize(this)">
-            <div class="card-body d-flex flex-column justify-content-center text-center">
-              <h5 class="card-title ${titleClass}">${title}</h5>
-              ${labelHtml}
+            <div class="card-img-area">
+              <img src="${img.image}" class="card-img-top" alt="Scanned image" onload="checkSize(this)">
+            </div>
+            <div class="card-body d-flex flex-column justify-content-end text-center">
+              <div class="card-status">
+                <h5 class="card-title ${titleClass}">${title}</h5>
+                ${labelHtml}
+              </div>
             </div>
           </div>
         </div>
@@ -134,15 +141,20 @@ function renderScanResults(data) {
 
   scanResults.append(grid);
 
-  $("#showImagesBtn").on("click", () => {
-    $("#imagesGrid").removeClass("d-none");
-    $("#showImagesBtn").hide();
-  });
+  // Only show the button if there are flagged images
+  if (flaggedCount > 0) {
+    scanResults.append(`
+      <div class="text-center mb-4">
+        <button id="showImagesBtn" class="custom-upload-btn">Show flagged & scanned images</button>
+      </div>
+    `);
+
+    $("#showImagesBtn").on("click", () => {
+      $("#imagesGrid").removeClass("d-none");
+      $("#showImagesBtn").hide();
+    });
+  }
 }
 
 // פונקציה שמסתירה תמונות קטנות מדי
-function checkSize(img) {
-  if (img.naturalWidth < 150 || img.naturalHeight < 150) {
-    img.classList.add("too-small");
-  }
-}
+function checkSize(img) {}

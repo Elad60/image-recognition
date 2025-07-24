@@ -1,6 +1,31 @@
 // ✅ הנחנו שה־userInfo כבר קיים מהתחברות קודמת
 $(document).ready(function () {
   const userInfo = getUserInfoFromToken(); // אתה כנראה מגדיר את זה בדף login
+
+  // Block access for not logged-in users
+  if (!userInfo || !userInfo.email) {
+    Swal.fire({
+      icon: "info",
+      title: "Sign In Required",
+      html: "You must be signed in to access this feature. Please log in to continue.<br><br>However, you can still try the <b>Page Analysis</b> feature without signing in.",
+      showCancelButton: true,
+      confirmButtonText: "Login",
+      cancelButtonText: "Try Page Analysis",
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (typeof signIn === 'function') {
+          signIn(); // Use the same Cognito sign-in as the main app
+        } else {
+          window.location.replace('index.html'); // fallback
+        }
+      } else {
+        // Go to scanPage.html without showing the alert again
+        window.location.href = "scanPage.html";
+      }
+    });
+    return;
+  }
   console.log("📧 Logged in user:", userInfo?.email || "Unknown");
 
   const imageInput = document.getElementById("imageInput");
@@ -95,7 +120,7 @@ $(document).ready(function () {
       const imageUrl = `https://image-recognition-stack-myimageuploadbucket-am7grb92qwe7.s3.us-east-1.amazonaws.com/${decodeURIComponent(
         fileKey
       )}`;
-      console.log("Image URL:" + imageUrl)
+      console.log("Image URL:" + imageUrl);
       console.log("api URL:" + apiUrl);
 
       if (!labels || labels.length === 0) {

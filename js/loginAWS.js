@@ -92,6 +92,9 @@ async function exchangeCodeForTokens(code) {
     if (data.id_token) {
       console.log("ID Token:", data.id_token);
       localStorage.setItem("id_token", data.id_token);
+      if (data.refresh_token) {
+        localStorage.setItem("refresh_token", data.refresh_token);
+      }
       displayUserInfo(data.id_token);
     } else {
       console.error("No ID token received");
@@ -103,6 +106,46 @@ async function exchangeCodeForTokens(code) {
       text: "Failed to sign in. Please try again.",
       icon: "error",
     });
+  }
+}
+
+// Returns true if the JWT is expired
+function isTokenExpired(token) {
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const now = Math.floor(Date.now() / 1000);
+    return payload.exp < now;
+  } catch (e) {
+    return true;
+  }
+}
+
+// Refreshes the id_token using the refresh_token
+async function refreshIdToken() {
+  const refreshToken = localStorage.getItem("refresh_token");
+  if (!refreshToken) throw new Error("No refresh token available");
+  const tokenEndpoint = `https://${cognitoConfig.Domain}.auth.${cognitoConfig.Region}.amazoncognito.com/oauth2/token`;
+  const params = new URLSearchParams();
+  params.append("grant_type", "refresh_token");
+  params.append("client_id", cognitoConfig.ClientId);
+  params.append("client_secret", cognitoConfig.ClientSecret);
+  params.append("refresh_token", refreshToken);
+
+  const response = await fetch(tokenEndpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: params,
+  });
+  if (!response.ok) throw new Error("Failed to refresh token");
+  const data = await response.json();
+  if (data.id_token) {
+    localStorage.setItem("id_token", data.id_token);
+    return data.id_token;
+  } else {
+    throw new Error("No id_token in refresh response");
   }
 }
 

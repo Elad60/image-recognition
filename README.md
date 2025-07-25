@@ -106,8 +106,6 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 
 - **GetProfilesUploadCount** – Aggregates and returns how many images each user has uploaded, useful for admin analytics and insights.
 
-- **ScanPageImages** – Given a webpage URL, extracts and scans all images on the page using Rekognition, similar to `ScanURL` but focused on bulk analysis.
-
 - **UploadPresignedUrl** – Generates a secure, time-limited S3 upload URL that allows users to upload images directly from the frontend without exposing AWS credentials.
 
 ---

@@ -68,7 +68,12 @@ $(document).ready(function () {
     uploadBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Analyzing...`;
 
     const file = imageInput.files[0];
+    // Sanitize the filename: replace spaces and special characters with underscores
+    function sanitizeFileName(name) {
+      return name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+    }
     const originalName = file.name;
+    const safeName = sanitizeFileName(originalName);
     resultDiv.innerText = "Uploading and analyzing image...";
 
     try {
@@ -80,7 +85,7 @@ $(document).ready(function () {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            imageName: originalName,
+            imageName: safeName,
             userEmail: userEmail,
           }),
         }

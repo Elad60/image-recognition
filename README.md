@@ -12,15 +12,6 @@ ScanER is a full-stack web application that leverages artificial intelligence to
 
 ---
 
-## Technologies Used
-
-- **Frontend:** HTML, CSS (Bootstrap), JavaScript (jQuery)
-- **Backend:** AWS Lambda (Python), Amazon Rekognition, API Gateway, S3, DynamoDB, SNS
-- **Authentication:** Amazon Cognito
-- **Infrastructure:** AWS CloudFormation
-
----
-
 ## Features
 
 - **AI-Based Image Moderation:** Detects nudity, violence, hate symbols, and more using advanced AI models.
@@ -33,22 +24,28 @@ ScanER is a full-stack web application that leverages artificial intelligence to
 
 ---
 
-## Architecture
+## 🛠️ Technologies & Architecture
 
-ScanER is built on a robust AWS serverless stack:
+ScanER is built using a modern, fully serverless AWS stack, combining AI, cloud infrastructure, and a responsive frontend.
 
-- **Frontend:** HTML, CSS (Bootstrap), JavaScript (jQuery)
-- **Authentication:** Amazon Cognito
-- **Backend:**
-  - AWS Lambda (Python) for image analysis, URL scanning, and user management
-  - Amazon Rekognition for AI-powered image content analysis
-  - Amazon S3 for image storage
-  - Amazon DynamoDB for metadata and scan results
-  - Amazon API Gateway for secure API access
-  - Amazon SNS for alerting
-- **Deployment:** AWS CloudFormation for infrastructure as code
+### 🔹 Frontend
+- **HTML, CSS (Bootstrap), JavaScript (jQuery)** – A responsive, user-friendly UI for image moderation, profile viewing, and page scanning.
 
-### High-Level Diagram
+### 🔹 Authentication
+- **Amazon Cognito** – Handles secure sign-up, login, and token-based API authentication.
+
+### 🔹 Backend (Serverless)
+- **AWS Lambda (Python)** – Executes moderation, scanning, and user profile logic.
+- **Amazon Rekognition** – Detects unsafe or harmful content in images.
+- **Amazon API Gateway** – Routes secure REST API calls to backend services.
+- **Amazon S3** – Stores uploaded images securely.
+- **Amazon DynamoDB** – Saves scan metadata, labels, and user scan history.
+- **Amazon SNS** – Sends alerts for dangerous content detection (e.g. weapons).
+
+### 🔹 Infrastructure
+- **AWS CloudFormation** – Automates deployment of all resources as code for fast setup and replication.
+
+### 🔹 High-Level Flow
 
 ```
 User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / DynamoDB / Cognito

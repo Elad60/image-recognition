@@ -80,6 +80,7 @@ User ──> Web App ──> API Gateway ──> Lambda Functions ──> S3 / D
 - The system will fetch images from the provided URL, analyze each one for unsafe content, and show a summary of flagged images and details for each image.
 
 ![Page Analysis Screenshot](images/usage-page-analysis.png)
+> ⚠️ **Note:** To prevent triggering AWS anti-bot protections, the system scans a **maximum of 10 images per webpage** during Page Analysis.
 
 ### 3. Profile
 

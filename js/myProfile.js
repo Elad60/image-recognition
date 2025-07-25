@@ -1,10 +1,27 @@
 $(document).ready(async function () {
-  const userInfo = getUserInfoFromToken();
+  let userInfo = getUserInfoFromToken();
   $("#profile-name").text(userInfo.username);
   $("#profile-email").text(userInfo.email);
 
   try {
-    const token = localStorage.getItem("id_token");
+    let token = localStorage.getItem("id_token");
+    // Check if token is expired and refresh if needed
+    if (typeof isTokenExpired === "function" && isTokenExpired(token)) {
+      if (typeof refreshIdToken === "function") {
+        try {
+          token = await refreshIdToken();
+          userInfo = getUserInfoFromToken();
+          $("#profile-name").text(userInfo.username);
+          $("#profile-email").text(userInfo.email);
+        } catch (refreshErr) {
+          console.error("🔴 Failed to refresh token:", refreshErr);
+          $("#scansGrid").append(
+            `<div class="text-center text-danger">Session expired. Please log in again.</div>`
+          );
+          return;
+        }
+      }
+    }
     const response = await fetch(
       "https://ymj65ginm4.execute-api.us-east-1.amazonaws.com/prod/profile",
       {
@@ -36,7 +53,7 @@ $(document).ready(async function () {
           } me-1 mb-1">${label.Name} (${parseFloat(label.Confidence).toFixed(
             1
           )}%)</span>`
-      ).join(" ");      
+      ).join(" ");
 
       const card = `
           <div class="col-md-6 col-lg-4">
